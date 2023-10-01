@@ -1,0 +1,46 @@
+<!-- {{ italok | json }} -->
+
+<ng-container *ngIf="!showError; else hibasapi">
+    <div class="row">
+        <div *ngFor="let o of oszlopok" class="col">
+            {{ o.text }}
+        </div>
+        <div class="col">
+            Műveletek
+        </div>
+    </div>
+
+    <div class="row my-2">
+        <div *ngFor="let o of oszlopok" class="col">
+            <ng-container *ngIf="o.type=='plain'; else szerkeszt">
+                {{ ujItal[o.key] }} <!-- Azonosító, id -->
+            </ng-container>
+            <ng-template #szerkeszt>
+                <input [(ngModel)]="ujItal[o.key]" [type]="o.type" class="form-control">
+            </ng-template>
+        </div>
+        <div class="col">
+            <button (click)="onCreate()" type="button" class="mx-1 btn btn-success">Hozzáadás</button>
+        </div>
+    </div>
+
+    <div *ngFor="let ital of italok" class="row my-2">
+        <div *ngFor="let o of oszlopok" class="col">
+            <ng-container *ngIf="o.type=='plain'; else szerkeszt">
+                {{ ital[o.key] }} <!-- Azonosító, id -->
+            </ng-container>
+            <ng-template #szerkeszt>
+                <input [(ngModel)]="ital[o.key]" [type]="o.type" class="form-control">
+            </ng-template>
+        </div>
+        <div class="col">
+            <button (click)="onUpdate(ital)" type="button" class="mx-1 btn btn-warning">Módosítás</button>
+            <button (click)="onDelete(ital.id)" type="button" class="mx-1 btn btn-danger">Törlés</button>
+        </div>
+    </div>
+</ng-container>
+<ng-template #hibasapi>
+    <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+    </div>
+</ng-template>
